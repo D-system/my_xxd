@@ -2,6 +2,16 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
+fn print_hex(bytes: &[u8]) {
+    for bytes_slice in bytes.chunks(2) {
+        for c in bytes_slice {
+            print!("{:02x}", c)
+        }
+        let space_to_print = 3 - bytes_slice.len();
+        print!("{:>width$}", " ", width = space_to_print)
+    }
+}
+
 fn main() {
     let path = Path::new("Cargo.toml");
 
@@ -24,16 +34,8 @@ fn main() {
 
         print!("{:0>7}0: ", counter);
 
-
         let bytes = the_rest.as_bytes();
-
-        for bytes_slice in bytes.chunks(2) {
-            for c in bytes_slice {
-                print!("{:02x}", c)
-            }
-            let space_to_print = 3 - bytes_slice.len();
-            print!("{:>width$}", " ", width = space_to_print)
-        }
+        print_hex(&bytes);
 
         for c in bytes {
             if *c >= 32 && *c <= 126 {
