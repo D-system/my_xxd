@@ -17,14 +17,17 @@ fn print_hex(bytes: &[u8]) {
 }
 
 fn print_file(bytes: &[u8]) {
+    let mut result = String::new();
+
     for c in bytes {
         if *c >= 32 && *c <= 126 {
-            print!("{}", *c as char)
+            result.push(*c as char);
         } else {
-            print!(".")
+            result.push('.');
         }
     }
 
+    print!("{}", result)
 }
 
 fn main() {
