@@ -39,9 +39,8 @@ fn main() {
 
     let mut line_counter = 0;
     let mut the_rest: String = s;
-    while the_rest.len() >= 16 {
-
-        let tmp_rest = the_rest.split_off(16);
+    while the_rest.len() >= 1 {
+        let tmp_rest = the_rest.split_off(the_rest.len().min(16));
 
         print!("{:0>7}0: ", line_counter);
 
