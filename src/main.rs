@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use std::io;
 
 fn print_hex(bytes: &[u8]) {
     let mut result = String::new();
@@ -34,8 +35,13 @@ fn main() {
     let path = Path::new("Cargo.toml");
 
     let mut file = match File::open(path) {
-        Err(_why) => {
-            eprintln!("xxd: {}: No such file or directory", path.display());
+        Err(why) => {
+            let error = match why.kind() {
+                io::ErrorKind::PermissionDenied => { "Permission denied" },
+                io::ErrorKind::NotFound => { "No such file or directory" },
+                _ => { "Unknown error" },
+            };
+            eprintln!("xxd: {}: {}", path.display(), error);
             std::process::exit(1);
         },
         Ok(file) => file,
