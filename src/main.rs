@@ -34,7 +34,10 @@ fn main() {
     let path = Path::new("Cargo.toml");
 
     let mut file = match File::open(path) {
-        Err(why) => panic!("Does not exists: {} {}", path.display(), why),
+        Err(_why) => {
+            eprintln!("xxd: {}: No such file or directory", path.display());
+            std::process::exit(1);
+        },
         Ok(file) => file,
     };
 
