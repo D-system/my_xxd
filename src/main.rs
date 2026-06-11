@@ -37,13 +37,13 @@ fn main() {
         Ok(_size) => {},
     };
 
-    let mut counter = 0;
+    let mut line_counter = 0;
     let mut the_rest: String = s;
     while the_rest.len() >= 16 {
 
         let tmp_rest = the_rest.split_off(16);
 
-        print!("{:0>7}0: ", counter);
+        print!("{:0>7}0: ", line_counter);
 
         let bytes = the_rest.as_bytes();
         print_hex(&bytes);
@@ -52,6 +52,6 @@ fn main() {
         println!("");
 
         the_rest = tmp_rest;
-        counter += 1;
+        line_counter += 1;
     }
 }
