@@ -12,6 +12,17 @@ fn print_hex(bytes: &[u8]) {
     }
 }
 
+fn print_file(bytes: &[u8]) {
+    for c in bytes {
+        if *c >= 32 && *c <= 126 {
+            print!("{}", *c as char)
+        } else {
+            print!(".")
+        }
+    }
+
+}
+
 fn main() {
     let path = Path::new("Cargo.toml");
 
@@ -36,14 +47,7 @@ fn main() {
 
         let bytes = the_rest.as_bytes();
         print_hex(&bytes);
-
-        for c in bytes {
-            if *c >= 32 && *c <= 126 {
-                print!("{}", *c as char)
-            } else {
-                print!(".")
-            }
-        }
+        print_file(&bytes);
 
         println!("");
 
