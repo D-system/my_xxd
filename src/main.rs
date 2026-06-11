@@ -3,13 +3,17 @@ use std::io::Read;
 use std::path::Path;
 
 fn print_hex(bytes: &[u8]) {
+    let mut result = String::new();
+    
     for bytes_slice in bytes.chunks(2) {
         for c in bytes_slice {
-            print!("{:02x}", c)
+            result.push_str(format!("{:02x}", c).as_str());
         }
-        let space_to_print = 3 - bytes_slice.len();
-        print!("{:>width$}", " ", width = space_to_print)
+        let width = 3 - bytes_slice.len();
+        result.push_str(format!("{:>width$}", " ").as_str());
     }
+    let width = 8 * 5 + 1; // It could be a constant of 41
+    print!("{: <width$}", result);
 }
 
 fn print_file(bytes: &[u8]) {
