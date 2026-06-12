@@ -87,4 +87,12 @@ mod tests {
         assert_eq!(build_hex_output("12345678".as_bytes()), "3132 3334 3536 3738                      ");
         assert_eq!(build_hex_output("1234567812345678".as_bytes()), "3132 3334 3536 3738 3132 3334 3536 3738  ");
     }
+
+    #[test]
+    fn test_build_file_output() {
+        assert_eq!(build_file_output("a".as_bytes()), "a");
+        assert_eq!(build_file_output("a b".as_bytes()), "a b");
+        assert_eq!(build_file_output("a\nb".as_bytes()), "a.b");
+        assert_eq!(build_file_output("a\tc".as_bytes()), "a.c");
+    }
 }
