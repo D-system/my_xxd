@@ -31,10 +31,8 @@ fn print_file(bytes: &[u8]) {
     print!("{}", result)
 }
 
-fn main() {
-    let path = Path::new("Cargo.toml");
-
-    let mut file = match File::open(path) {
+fn open_file(path: &Path) -> File {
+    match File::open(path) {
         Err(why) => {
             let error = match why.kind() {
                 io::ErrorKind::PermissionDenied => { "Permission denied" },
@@ -45,7 +43,13 @@ fn main() {
             std::process::exit(1);
         },
         Ok(file) => file,
-    };
+    }
+}
+
+fn main() {
+    let path = Path::new("Cargo.toml");
+
+    let mut file = open_file(path);
 
     let mut s = String::new();
     match file.read_to_string(&mut s) {
