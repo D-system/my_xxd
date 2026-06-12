@@ -94,5 +94,10 @@ mod tests {
         assert_eq!(build_file_output("a b".as_bytes()), "a b");
         assert_eq!(build_file_output("a\nb".as_bytes()), "a.b");
         assert_eq!(build_file_output("a\tc".as_bytes()), "a.c");
+
+        // Checking the length of a Japanese character to double check expected output
+        let jp_char = "あ";
+        assert_eq!(jp_char.as_bytes().len(), 3);
+        assert_eq!(build_file_output(jp_char.as_bytes()), "...");
     }
 }
