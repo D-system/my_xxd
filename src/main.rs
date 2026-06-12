@@ -3,7 +3,7 @@ use std::io::Read;
 use std::path::Path;
 use std::io;
 
-fn print_hex(bytes: &[u8]) {
+fn build_hex_output(bytes: &[u8]) -> String {
     let mut result = String::new();
     
     for bytes_slice in bytes.chunks(2) {
@@ -14,10 +14,10 @@ fn print_hex(bytes: &[u8]) {
         result.push_str(format!("{:>width$}", " ").as_str());
     }
     let width = 8 * 5 + 1; // It could be a constant of 41
-    print!("{: <width$}", result);
+    format!("{: <width$}", result)
 }
 
-fn print_file(bytes: &[u8]) {
+fn build_file_output(bytes: &[u8]) -> String {
     let mut result = String::new();
 
     for c in bytes {
@@ -28,7 +28,7 @@ fn print_file(bytes: &[u8]) {
         }
     }
 
-    print!("{}", result)
+    result
 }
 
 fn open_file(path: &Path) -> File {
@@ -65,8 +65,8 @@ fn main() {
         print!("{:0>7}0: ", line_counter);
 
         let bytes = the_rest.as_bytes();
-        print_hex(&bytes);
-        print_file(&bytes);
+        print!("{}", build_hex_output(&bytes));
+        print!("{}", build_file_output(&bytes));
 
         println!("");
 
