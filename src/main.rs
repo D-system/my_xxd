@@ -82,9 +82,9 @@ mod tests {
 
     #[test]
     fn test_build_hex_output() {
-        assert_eq!(build_hex_output("a".as_bytes()), "61                                       ".to_string());
-        assert_eq!(build_hex_output("ab".as_bytes()), "6162                                     ".to_string());
-        assert_eq!(build_hex_output("12345678".as_bytes()), "3132 3334 3536 3738                      ".to_string());
-        assert_eq!(build_hex_output("1234567812345678".as_bytes()), "3132 3334 3536 3738 3132 3334 3536 3738  ".to_string());
+        assert_eq!(build_hex_output("a".as_bytes()), "61                                       ");
+        assert_eq!(build_hex_output("ab".as_bytes()), "6162                                     ");
+        assert_eq!(build_hex_output("12345678".as_bytes()), "3132 3334 3536 3738                      ");
+        assert_eq!(build_hex_output("1234567812345678".as_bytes()), "3132 3334 3536 3738 3132 3334 3536 3738  ");
     }
 }
