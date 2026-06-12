@@ -31,7 +31,7 @@ fn build_file_output(bytes: &[u8]) -> String {
     result
 }
 
-fn open_file(path: &Path) -> File {
+fn open_file(path: &Path) -> Option<File> {
     match File::open(path) {
         Err(why) => {
             let error = match why.kind() {
@@ -40,16 +40,18 @@ fn open_file(path: &Path) -> File {
                 _ => { "Unknown error" },
             };
             eprintln!("xxd: {}: {}", path.display(), error);
-            std::process::exit(1);
+            None
         },
-        Ok(file) => file,
+        Ok(file) => Some(file),
     }
 }
 
 fn main() {
     let path = Path::new("Cargo.toml");
 
-    let mut file = open_file(path);
+    let Some(mut file) = open_file(path) else {
+        std::process::exit(1);
+    };
 
     let mut s = String::new();
     match file.read_to_string(&mut s) {
@@ -78,7 +80,10 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use std::{fs, os::unix::fs::PermissionsExt};
+
+use super::*;
+    use tempfile::NamedTempFile;
 
     #[test]
     fn test_build_hex_output() {
@@ -99,5 +104,29 @@ mod tests {
         let jp_char = "あ";
         assert_eq!(jp_char.as_bytes().len(), 3);
         assert_eq!(build_file_output(jp_char.as_bytes()), "...");
+    }
+
+    #[test]
+    fn test_open_file_exiting_file() {
+        let tmp = NamedTempFile::new().unwrap();
+        assert!(open_file(tmp.path()).is_some());
+    }
+
+    #[test]
+    fn test_open_file_missing_file() {
+        assert!(open_file(Path::new("./none_existing_file")).is_none());
+    }
+
+    #[test]
+    fn test_open_file_missing_permission() {
+        let tmp = NamedTempFile::new().unwrap();
+        let path = tmp.path();
+
+        let mut permissions = fs::metadata(path).unwrap().permissions();
+        permissions.set_mode(0o000);
+        fs::set_permissions(path, permissions).unwrap();
+
+        // It's the same assertion as the missing file. It's good enough as it check it does not continue.
+        assert!(open_file(path).is_none());
     }
 }
