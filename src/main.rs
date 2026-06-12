@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
-use std::io;
+use std::{env, io};
 
 fn build_hex_output(bytes: &[u8]) -> String {
     let mut result = String::new();
@@ -47,7 +47,15 @@ fn open_file(path: &Path) -> Option<File> {
 }
 
 fn main() {
-    let path = Path::new("Cargo.toml");
+    let args = env::args();
+    
+    if args.len() != 2 {
+        eprintln!("This xxd version requires a filename to output");
+        std::process::exit(1);
+    }
+
+    let path = args.last().unwrap();
+    let path = Path::new(path.as_str());
 
     let Some(mut file) = open_file(path) else {
         std::process::exit(1);
