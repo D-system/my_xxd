@@ -88,9 +88,8 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use std::{fs, os::unix::fs::PermissionsExt};
-
-use super::*;
     use tempfile::NamedTempFile;
 
     #[test]
